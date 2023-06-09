@@ -4,20 +4,20 @@ RSpec.describe Book, type: :model do
   context "validity of Book" do
     let(:book1) do
       Book.create(
-        author_name:,
-        title:,
-        description:,
-        rating:,
-        word_count:
+        author_name: author_name,
+        title: title,
+        description: description,
+        rating: rating,
+        word_count: word_count
       )
     end
     let(:book2) do
       Book.create(
-        author_name:,
-        title:,
-        description:,
-        rating:,
-        word_count:
+       author_name: author_name,
+        title: title,
+        description: description,
+        rating: rating,
+        word_count: word_count
       )
     end
     let(:author_name) { "Kathleen Walsh" }
@@ -39,6 +39,17 @@ RSpec.describe Book, type: :model do
       let(:rating) { 8 }
       it "is invalid without a star rating between 1-5" do
         expect(book1).to_not be_valid
+      end
+
+      it "does not raise an exception if rating greater than 3" do
+        expect { book1.validate_rating(rating) }.to_not raise_error
+      end
+    end
+
+    context "rating less than or equal to 3" do
+      let(:rating) { 3 }
+      it "raises an exception if rating less than or equal to 3" do
+        expect { book1.validate_rating(rating) }.to raise_error(StandardError)
       end
     end
   end
